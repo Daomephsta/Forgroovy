@@ -61,3 +61,35 @@ processResources {
         exclude 'mcmod.info'
     }
 }
+
+sourceSets {
+	reobfuscator {
+		java {
+			srcDir 'src/reobfuscator/java'
+			compileClasspath = sourceSets.main.compileClasspath
+		}
+		resources {
+			srcDir 'src/reobfuscator/resources'
+		}
+	}
+}
+
+task compileTransformers(type: JavaCompile) {
+	description 'Compiles the Forgroovy reobfuscating transformer'
+	source(sourceSets.reobfuscator.java)
+	classpath = sourceSets.reobfuscator.compileClasspath
+	destinationDir = file("${buildDir}/compileTransformers")
+}
+
+task transformersJar(type: Jar, dependsOn: compileTransformers) {
+	description 'Assembles the Forgroovy reobfuscating transformer into a jar'
+	archiveName = 'ReobfuscatorTransformer.jar'
+	from file("${buildDir}/compileTransformers")
+	destinationDir = file("${buildDir}/libs")
+	metaInf {
+		from sourceSets.reobfuscator.resources
+		include 'services/*'
+		// Exclude duplicates
+		duplicatesStrategy = 'exclude'
+	}
+}

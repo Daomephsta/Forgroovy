@@ -1,1 +1,1 @@
-daomephsta.forgroovy.reobfuscator.DynamicCallReobfuscatingTransformer
+daomephsta.forgroovy.transformers.DefaultCompileStaticTransformer

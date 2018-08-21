@@ -15,6 +15,7 @@ class GrooveTest
 		MC_VERSION = '1.12.2',
 		DEPENDENCIES = 'required-after:forgroovy'
 		
+	@Mod.EventHandler	
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		println Blocks.ANVIL;

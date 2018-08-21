@@ -20,22 +20,26 @@ compileJava {
     sourceCompatibility = targetCompatibility = '1.8'
 }
 
-minecraft 
-{
+minecraft {
     version = project.mcVersion + '-' + project.forgeVersion
     runDir = 'run'
     mappings = project.mappingsVersion
     makeObfSourceJar = false
 }
 
-repositories
-{
+configurations {
+	//Jars to package using ContainedDeps
+	containedDep
+}
+
+repositories {
 	jcenter()
 }
 
-dependencies
-{
+dependencies {
 	compile "org.codehaus.groovy:groovy:${project.groovyVersion}"
+	//Package the full groovy jar
+	containedDep "org.codehaus.groovy:groovy-all:${project.groovyVersion}"
 	for (module in ['json', 'nio'])
 	{
 		compile "org.codehaus.groovy:groovy-${module}:${project.groovyVersion}"
@@ -62,9 +66,31 @@ processResources {
     }
 }
 
+task generateDependencyMetaFiles {
+	//Delete any previous meta files
+	file("${buildDir}/dependencyMeta").deleteDir()
+	//Generate new meta files
+	configurations.containedDep.resolvedConfiguration.resolvedArtifacts.each {
+		def metaFile = file("${buildDir}/dependencyMeta/${it.file.name}.meta")
+		metaFile.parentFile.mkdirs()
+		metaFile.text = "Maven-Artifact: ${it.moduleVersion.id}"
+	}
+}
+
 jar {
-	from tasks.getByPath(':global-ast-transformers:compileJava'),
+	//Add source and resources of global-ast-transformers
+	from tasks.getByPath(':global-ast-transformers:compileJava'), 
 	tasks.getByPath(':global-ast-transformers:processResources')
+	//Package contained dependencies
+	into('/META-INF/libraries') {
+		from configurations.containedDep, file("${buildDir}/dependencyMeta")
+	}
+	//Add contained dependencies to the manifest
+	manifest {
+		attributes 'ContainedDeps': configurations.containedDep.collect {it.name}.join(' ')
+	}
+	
+	dependsOn generateDependencyMetaFiles
 }
 
 task buildGroovyTest(type: Jar) {

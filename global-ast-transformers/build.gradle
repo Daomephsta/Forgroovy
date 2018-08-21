@@ -1,13 +1,13 @@
-apply plugin: 'groovy'
+apply plugin: 'java'
 
 repositories {
     jcenter()
 }
 
 dependencies {
-	compile 'org.codehaus.groovy:groovy:' + rootProject.groovyVersion
+	compile "org.codehaus.groovy:groovy:${rootProject.groovyVersion}"
 	for (module in ['json', 'nio'])
 	{
-		compile "org.codehaus.groovy:groovy-${module}:" + rootProject.groovyVersion
+		compile "org.codehaus.groovy:groovy-${module}:${rootProject.groovyVersion}"
 	}
 }

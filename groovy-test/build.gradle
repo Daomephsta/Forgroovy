@@ -63,8 +63,11 @@ processResources {
     }
 }
 
-task buildGroovyTest(type: GradleBuild) {
-	buildFile = file("${projectDir}/groovy-test/build.gradle")
-	dir = file("${projectDir}/groovy-test")
-	tasks = ['build']
+sourceSets {
+	test {
+		groovy {
+			srcDir 'src/test/groovy'
+		}
+	}
 }
+compileGroovy.source(sourceSets.test.groovy)

@@ -1,4 +1,4 @@
-package daomephsta.groovetest
+package daomephsta.groovytest
 
 import groovy.transform.CompileStatic
 import net.minecraft.init.Blocks

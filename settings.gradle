@@ -1,2 +1,3 @@
 rootProject.name = 'Forgroovy'
 include 'global-ast-transformers'
+include 'groovy-test'

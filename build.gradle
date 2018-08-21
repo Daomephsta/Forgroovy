@@ -7,7 +7,6 @@ buildscript {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
-apply plugin: 'groovy'
 apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
@@ -63,8 +62,11 @@ processResources {
     }
 }
 
-task buildGroovyTest(type: GradleBuild) {
-	buildFile = file("${projectDir}/groovy-test/build.gradle")
-	dir = file("${projectDir}/groovy-test")
-	tasks = ['build']
+jar {
+	from tasks.getByPath(':global-ast-transformers:compileJava'),
+	tasks.getByPath(':global-ast-transformers:processResources')
+}
+
+task buildGroovyTest(type: Jar) {
+	from tasks.getByPath(':groovy-test:assemble')
 }

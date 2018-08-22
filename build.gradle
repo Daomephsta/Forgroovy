@@ -38,12 +38,12 @@ repositories {
 
 dependencies {
 	compile "org.codehaus.groovy:groovy:${project.groovyVersion}"
-	//Package the full groovy jar
-	containedDep "org.codehaus.groovy:groovy-all:${project.groovyVersion}"
-	for (module in ['json', 'nio'])
+	containedDep "org.codehaus.groovy:groovy:${project.groovyVersion}"
+      /*for (module in ['json', 'nio'])
 	{
 		compile "org.codehaus.groovy:groovy-${module}:${project.groovyVersion}"
-	}
+		containedDep "org.codehaus.groovy:groovy-${module}:${project.groovyVersion}"
+	}*/
 	compile project(':global-ast-transformers')
 }
 

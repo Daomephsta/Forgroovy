@@ -30,6 +30,7 @@ minecraft {
 configurations {
 	//Jars to package using ContainedDeps
 	containedDep
+	compile.extendsFrom containedDep
 }
 
 repositories {
@@ -37,13 +38,22 @@ repositories {
 }
 
 dependencies {
-	compile "org.codehaus.groovy:groovy:${project.groovyVersion}"
-	containedDep "org.codehaus.groovy:groovy:${project.groovyVersion}"
-      /*for (module in ['json', 'nio'])
+	containedDep "org.codehaus.groovy:groovy:${project.groovyVersion}:indy"
+    for (module in ['json', 'xml', 'jaxb', 'nio', 'datetime', 'macro'])
 	{
-		compile "org.codehaus.groovy:groovy-${module}:${project.groovyVersion}"
-		containedDep "org.codehaus.groovy:groovy-${module}:${project.groovyVersion}"
-	}*/
+		containedDep("org.codehaus.groovy:groovy-${module}:${project.groovyVersion}:indy")
+		{
+			//Exclude non-indy groovy core which the indy modules wrongly depend on
+			exclude group: 'org.codehaus.groovy', module: 'groovy'
+		}
+	}	
+	containedDep("org.codehaus.groovy:groovy-templates:${project.groovyVersion}:indy")
+	{
+		//Exclude non-indy groovy core which the indy modules wrongly depend on
+		exclude group: 'org.codehaus.groovy', module: 'groovy'
+		//Exclude non-indy groovy-xml which indy groovy-templates wrongly depends on
+		exclude group: 'org.codehaus.groovy', module: 'groovy-xml'
+	}
 	compile project(':global-ast-transformers')
 }
 
@@ -67,13 +77,15 @@ processResources {
 }
 
 task generateDependencyMetaFiles {
-	//Delete any previous meta files
-	file("${buildDir}/dependencyMeta").deleteDir()
-	//Generate new meta files
-	configurations.containedDep.resolvedConfiguration.resolvedArtifacts.each {
-		def metaFile = file("${buildDir}/dependencyMeta/${it.file.name}.meta")
-		metaFile.parentFile.mkdirs()
-		metaFile.text = "Maven-Artifact: ${it.moduleVersion.id}"
+	doLast {
+		//Delete any previous meta files
+		file("${buildDir}/dependencyMeta").deleteDir()
+		//Generate new meta files
+		configurations.containedDep.resolvedConfiguration.resolvedArtifacts.each {
+			def metaFile = file("${buildDir}/dependencyMeta/${it.file.name}.meta")
+			metaFile.parentFile.mkdirs()
+			metaFile.text = "Maven-Artifact: ${it.moduleVersion.id}\n"
+		}
 	}
 }
 

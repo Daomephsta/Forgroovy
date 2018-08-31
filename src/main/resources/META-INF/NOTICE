@@ -1,0 +1,11 @@
+This product includes the following libraries developed by 
+the Apache Software Foundation (http://www.apache.org/):
+	groovy-json-2.5.2-indy.jar
+	groovy-templates-2.5.2-indy.jar
+	groovy-nio-2.5.2-indy.jar
+	groovy-datetime-2.5.2-indy.jar
+	groovy-xml-2.5.2-indy.jar
+	groovy-jaxb-2.5.2-indy.jar
+	groovy-macro-2.5.2-indy.jar
+Licensing information for them can be found in the META-INF folder
+of their respective JARs.

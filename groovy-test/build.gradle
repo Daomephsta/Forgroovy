@@ -36,10 +36,10 @@ repositories
 
 dependencies
 {
-	compile "org.codehaus.groovy:groovy:${project.groovyVersion}"
-	for (module in ['json', 'nio'])
+	compile "org.codehaus.groovy:groovy:${project.groovyVersion}:indy"
+    for (module in ['json', 'nio'])
 	{
-		compile "org.codehaus.groovy:groovy-${module}:${project.groovyVersion}"
+		compile "org.codehaus.groovy:groovy-${module}:${project.groovyVersion}:indy"
 	}
 	compile project(':global-ast-transformers')
 }
@@ -73,4 +73,5 @@ sourceSets {
 
 compileGroovy {
 	source sourceSets.test.groovy
+	groovyOptions.optimizationOptions.put('indy', true)
 }

@@ -2,13 +2,16 @@ buildscript {
     repositories {
         jcenter()
         maven { url = "http://files.minecraftforge.net/maven" }
+		mavenLocal()
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+		classpath 'daomephsta.forgroovy.gradleplugin:forgroovy-gradle-plugin:0.0.1'
     }
 }
 apply plugin: 'groovy'
 apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'daomephsta.forgroovy.gradleplugin'
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
 

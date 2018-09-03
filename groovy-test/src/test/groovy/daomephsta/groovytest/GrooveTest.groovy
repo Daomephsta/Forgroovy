@@ -8,6 +8,7 @@ import net.minecraft.init.Blocks
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 
+@groovy.transform.CompileDynamic
 @Mod(modid = GrooveTest.MODID, version = GrooveTest.MOD_VERSION, 
 	acceptedMinecraftVersions = GrooveTest.MC_VERSION, dependencies = GrooveTest.DEPENDENCIES,
 	modLanguageAdapter = "daomephsta.forgroovy.GroovyLanguageAdapter")
@@ -22,6 +23,7 @@ class GrooveTest
 	@Mod.EventHandler	
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		println 'Hello from Groovy Land'
+		Blocks.getRegisteredBlock("brick")
+		Blocks.ANVIL
 	}
 }
